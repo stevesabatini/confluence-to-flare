@@ -1,0 +1,495 @@
+/* ── Confluence → Flare Importer ─────────────────────── */
+
+:root {
+    --blue: #2563eb;
+    --blue-light: #dbeafe;
+    --green: #16a34a;
+    --green-light: #dcfce7;
+    --red: #dc2626;
+    --red-light: #fef2f2;
+    --orange: #ea580c;
+    --orange-light: #fff7ed;
+    --yellow: #ca8a04;
+    --yellow-light: #fefce8;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    --radius: 8px;
+    --radius-sm: 4px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                 "Helvetica Neue", Arial, sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-800);
+    line-height: 1.5;
+}
+
+/* ── Container ───────────────────────────────────────── */
+
+.container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 24px 20px;
+}
+
+header {
+    margin-bottom: 24px;
+}
+
+header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--gray-900);
+}
+
+/* ── Buttons ─────────────────────────────────────────── */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background: var(--blue);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #1d4ed8;
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--gray-700);
+    border: 1px solid var(--gray-300);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: var(--gray-100);
+}
+
+.btn-icon {
+    font-size: 1.1em;
+}
+
+/* ── Alerts ──────────────────────────────────────────── */
+
+.alert {
+    padding: 16px 20px;
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.alert-error {
+    background: var(--red-light);
+    border: 1px solid #fecaca;
+    color: var(--red);
+}
+
+.alert-success {
+    background: var(--green-light);
+    border: 1px solid #bbf7d0;
+    color: var(--green);
+    font-weight: 500;
+}
+
+.alert-warning {
+    background: var(--yellow-light);
+    border: 1px solid #fde68a;
+    color: var(--yellow);
+    font-weight: 500;
+}
+
+.alert-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--red);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.875rem;
+    flex-shrink: 0;
+}
+
+.alert-content p {
+    margin-top: 4px;
+    font-size: 0.875rem;
+    color: var(--gray-600);
+}
+
+/* ── Toolbar ─────────────────────────────────────────── */
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.muted {
+    color: var(--gray-500);
+    font-size: 0.875rem;
+}
+
+/* ── Page List ───────────────────────────────────────── */
+
+.select-all-row {
+    padding: 8px 12px;
+    background: var(--gray-100);
+    border-radius: var(--radius) var(--radius) 0 0;
+    border: 1px solid var(--gray-200);
+    border-bottom: none;
+}
+
+.page-list {
+    border: 1px solid var(--gray-200);
+    border-radius: 0 0 var(--radius) var(--radius);
+    background: white;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.page-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--gray-100);
+    transition: background 0.1s;
+}
+
+.page-row:last-child {
+    border-bottom: none;
+}
+
+.page-row:hover {
+    background: var(--gray-50);
+}
+
+.page-row.imported {
+    opacity: 0.55;
+}
+
+.page-checkbox {
+    margin-top: 3px;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.page-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.page-top-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.page-date {
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--gray-900);
+}
+
+.page-badges {
+    display: flex;
+    gap: 6px;
+}
+
+.page-title {
+    font-size: 0.8125rem;
+    color: var(--gray-500);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── Badges ──────────────────────────────────────────── */
+
+.badge {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 12px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.badge-features {
+    background: var(--blue-light);
+    color: var(--blue);
+}
+
+.badge-patch {
+    background: var(--orange-light);
+    color: var(--orange);
+}
+
+.badge-other {
+    background: var(--gray-100);
+    color: var(--gray-600);
+}
+
+.badge-imported {
+    background: transparent;
+    color: var(--green);
+    border: 1px solid var(--green);
+    padding: 0 7px;
+}
+
+/* ── Checkbox Label ──────────────────────────────────── */
+
+.checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: var(--gray-700);
+}
+
+.checkbox-label input {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+/* ── Actions Bar ─────────────────────────────────────── */
+
+.actions-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--gray-200);
+}
+
+/* ── Progress View ───────────────────────────────────── */
+
+#progress-header {
+    margin-bottom: 20px;
+}
+
+#progress-header h2 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background: var(--gray-200);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--blue);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.progress-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.progress-card {
+    background: white;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+}
+
+.progress-card.done {
+    border-color: #bbf7d0;
+}
+
+.progress-card.has-error {
+    border-color: #fecaca;
+}
+
+.progress-card.skipped {
+    opacity: 0.6;
+}
+
+.progress-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    font-size: 0.9375rem;
+}
+
+.progress-steps {
+    margin-top: 8px;
+    margin-left: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.progress-step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8125rem;
+    color: var(--gray-600);
+}
+
+.progress-step.error {
+    color: var(--red);
+}
+
+/* ── Icons (CSS-only) ────────────────────────────────── */
+
+.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+}
+
+.icon-done {
+    background: var(--green);
+    color: white;
+}
+
+.icon-done::after {
+    content: "\2713"; /* checkmark */
+}
+
+.icon-active {
+    border: 2px solid var(--blue);
+    border-top-color: transparent;
+    animation: spin 0.8s linear infinite;
+}
+
+.icon-error {
+    background: var(--red);
+    color: white;
+}
+
+.icon-error::after {
+    content: "\2717"; /* X */
+}
+
+.icon-skip {
+    background: var(--gray-400);
+    color: white;
+}
+
+.icon-skip::after {
+    content: "\2192"; /* arrow */
+    font-size: 0.625rem;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ── Complete Section ────────────────────────────────── */
+
+.next-steps {
+    margin: 16px 0;
+    padding: 16px;
+    background: var(--gray-50);
+    border-radius: var(--radius);
+}
+
+.next-steps strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.875rem;
+}
+
+.next-steps ol {
+    margin-left: 20px;
+    font-size: 0.875rem;
+    color: var(--gray-600);
+}
+
+.next-steps ol li {
+    margin-bottom: 4px;
+}
+
+/* ── Loading Spinner ─────────────────────────────────── */
+
+.spinner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 0;
+    color: var(--gray-500);
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--gray-200);
+    border-top-color: var(--blue);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 16px;
+}
+
+/* ── Empty State ─────────────────────────────────────── */
+
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--gray-500);
+    font-size: 0.9375rem;
+}

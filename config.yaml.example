@@ -1,0 +1,16 @@
+confluence:
+  base_url: "https://eci-solutions.atlassian.net"
+  email: "your-email@ecisolutions.com"
+  api_token: "your-api-token-here"
+  space_key: "CORP"
+  # Page ID of "Production Environment" — parent of all Production-YYYY folders.
+  # Find this by navigating to that page in Confluence and copying the ID from the URL.
+  production_parent_id: ""
+
+flare_project:
+  # Relative path from this directory to the Flare project root
+  root: "../Cognytics Application Help"
+  release_notes_dir: "Content/E_Landing Topics/Release Notes"
+  images_dir: "Content/Resources/From Confluence/Release Notes"
+  overview_file: "Content/E_Landing Topics/Release Notes/Release Notes Overview.htm"
+  toc_file: "Project/TOCs/Landing Topic Mini TOCs/Visualization Guide Mini-TOC.fltoc"

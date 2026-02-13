@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confluence &rarr; Flare Importer</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Confluence &rarr; Flare Importer</h1>
+        </header>
+
+        <noscript>
+            <div class="alert alert-error">
+                <div class="alert-icon">!</div>
+                <div class="alert-content">
+                    <strong>JavaScript Required</strong>
+                    <p>This tool requires JavaScript to be enabled in your browser.</p>
+                </div>
+            </div>
+        </noscript>
+
+        <!-- State 1: Config Error -->
+        <div id="config-error" class="state" style="display:none;">
+            <div class="alert alert-error">
+                <div class="alert-icon">!</div>
+                <div class="alert-content">
+                    <strong>Configuration Required</strong>
+                    <p id="config-error-message"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- State 2: Page Selection -->
+        <div id="page-selection" class="state" style="display:none;">
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <span id="page-count" class="muted"></span>
+                </div>
+                <div class="toolbar-right">
+                    <button id="btn-refresh" class="btn btn-secondary" onclick="refreshPages()">
+                        <span class="btn-icon">&#x21bb;</span> Refresh
+                    </button>
+                </div>
+            </div>
+
+            <div class="select-all-row">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="select-all" onchange="toggleSelectAll()">
+                    <span>Select All</span>
+                </label>
+            </div>
+
+            <div id="page-list" class="page-list">
+                <!-- Populated by JS -->
+            </div>
+
+            <div class="actions-bar">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="force-reimport" onchange="onForceChange()">
+                    <span>Force re-import (overwrite existing)</span>
+                </label>
+                <button id="btn-import" class="btn btn-primary" onclick="startImport()" disabled>
+                    Import Selected (<span id="selected-count">0</span>)
+                </button>
+            </div>
+        </div>
+
+        <!-- State 3: Import Progress -->
+        <div id="import-progress" class="state" style="display:none;">
+            <div id="progress-header">
+                <h2 id="progress-title">Importing...</h2>
+                <div class="progress-bar-container">
+                    <div id="progress-bar" class="progress-bar" style="width:0%"></div>
+                </div>
+                <span id="progress-text" class="muted"></span>
+            </div>
+
+            <div id="progress-list" class="progress-list">
+                <!-- Populated by SSE events -->
+            </div>
+
+            <div id="import-complete" style="display:none;">
+                <div id="complete-summary" class="alert alert-success"></div>
+                <div class="next-steps">
+                    <strong>Next steps:</strong>
+                    <ol>
+                        <li>Open the Flare project and preview the imported topics</li>
+                        <li>Run a Flare build to verify everything compiles</li>
+                        <li>Review the Overview page and Mini-TOC for correct ordering</li>
+                    </ol>
+                </div>
+                <button class="btn btn-secondary" onclick="backToList()">
+                    &larr; Back to Page List
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading spinner — visible by default so you see it immediately -->
+        <div id="loading" class="state">
+            <div class="spinner-container">
+                <div class="spinner"></div>
+                <p id="loading-message">Loading...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
