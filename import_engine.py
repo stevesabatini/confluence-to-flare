@@ -8,7 +8,9 @@ This module does NOT modify any existing lib/ code — it imports and
 calls the same functions the CLI uses.
 """
 
+import json
 import logging
+from datetime import datetime
 from pathlib import Path
 from typing import Generator
 
@@ -32,6 +34,25 @@ logger = logging.getLogger(__name__)
 
 # BOM character for Flare HTM files
 BOM = "\ufeff"
+
+MANIFEST_FILENAME = ".import_manifest.json"
+
+
+def load_import_manifest(release_notes_dir: Path) -> dict:
+    """Load the import manifest, returning {filename: {page_id, title, imported_at}}."""
+    manifest_path = release_notes_dir / MANIFEST_FILENAME
+    if not manifest_path.exists():
+        return {}
+    try:
+        return json.loads(manifest_path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
+def save_import_manifest(release_notes_dir: Path, manifest: dict) -> None:
+    """Save the import manifest."""
+    manifest_path = release_notes_dir / MANIFEST_FILENAME
+    manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 
 
 def validate_config(config_path: Path) -> dict:
@@ -106,6 +127,12 @@ def get_existing_releases(release_notes_dir: Path) -> set[str]:
     return {f.name for f in release_notes_dir.glob("Release Notes *.htm")}
 
 
+def get_imported_page_ids(release_notes_dir: Path) -> set[str]:
+    """Get Confluence page IDs that have been imported."""
+    manifest = load_import_manifest(release_notes_dir)
+    return {entry["confluence_page_id"] for entry in manifest.values() if entry.get("confluence_page_id")}
+
+
 def create_client(config: dict) -> ConfluenceClient:
     """Create an authenticated Confluence client from config."""
     conf = config["confluence"]
@@ -145,6 +172,8 @@ def run_import(
         env = Environment(loader=FileSystemLoader(str(template_dir)))
         template = env.get_template("release_note.htm.j2")
         existing = get_existing_releases(paths["release_notes_dir"])
+        manifest = load_import_manifest(paths["release_notes_dir"])
+        imported_page_ids = get_imported_page_ids(paths["release_notes_dir"])
     except Exception as e:
         yield {"type": "error", "index": -1, "message": f"Setup failed: {e}"}
         yield {"type": "complete", "imported": 0, "skipped": 0, "errors": 1, "message": "Import failed"}
@@ -177,8 +206,8 @@ def run_import(
             display_date = format_display_date(dt)
             image_folder_name = format_image_folder(dt)
 
-            # Check if already exists
-            if filename in existing and not force:
+            # Check if already imported (by Confluence page ID)
+            if page_id in imported_page_ids and not force:
                 yield {"type": "skip", "index": i, "filename": filename, "message": f"Already exists: {filename}"}
                 skipped_count += 1
                 continue
@@ -239,6 +268,14 @@ def run_import(
                 "message": f"Complete: {filename}",
             }
             imported_count += 1
+
+            # Record in import manifest
+            manifest[filename] = {
+                "confluence_page_id": page_id,
+                "confluence_title": title,
+                "imported_at": datetime.now().isoformat(),
+            }
+            save_import_manifest(paths["release_notes_dir"], manifest)
 
         except Exception as e:
             logger.exception("Error importing page %s", page_id)

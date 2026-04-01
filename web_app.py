@@ -22,6 +22,7 @@ from flask import Flask, Response, jsonify, render_template, request, stream_wit
 from import_engine import (
     create_client,
     get_existing_releases,
+    get_imported_page_ids,
     resolve_paths,
     run_import,
     validate_config,
@@ -117,6 +118,7 @@ def list_pages():
         # Resolve paths to check existing imports
         paths = resolve_paths(config, SCRIPT_DIR)
         existing = get_existing_releases(paths["release_notes_dir"])
+        imported_ids = get_imported_page_ids(paths["release_notes_dir"])
 
         # Augment each page with parsed date info and import status
         pages = []
@@ -131,7 +133,7 @@ def list_pages():
                     "parsed_date": dt.strftime("%Y-%m-%d"),
                     "display_date": format_display_date(dt),
                     "filename": filename,
-                    "already_imported": filename in existing,
+                    "already_imported": page["id"] in imported_ids,
                 })
             else:
                 # Include pages with unparseable dates too
