@@ -30,6 +30,7 @@
 		98365F83E444A576DFBBA48D /* ContentConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBED065846FB4087B0F783BC /* ContentConverter.swift */; };
 		B1E97B9FBA0CD1C332CB10AA /* release_note_template.htm in Resources */ = {isa = PBXBuildFile; fileRef = AFDC6E9A414E2842B912C095 /* release_note_template.htm */; };
 		B2A128AEF7CA0DE128DBB33C /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E95E19DBE98899A10F0A0C2 /* SettingsViewModel.swift */; };
+		CB1FAA7946F35D45E037FC4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D63CF9E0DE7ED1A110E6CA0 /* Assets.xcassets */; };
 		CDE2987CBEBA4AD1E1614BAD /* ConfluenceToFlareApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A005A1DD60029C7F864DF3E /* ConfluenceToFlareApp.swift */; };
 		D66D30A0A3348323B088DEBE /* ImportEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC012D14F869BC9168C59AE5 /* ImportEngine.swift */; };
 		D7BC4ABF2D957ADD5444F9D7 /* APIModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5697C6A7EBEE8A9DA09D4973 /* APIModels.swift */; };
@@ -62,6 +63,7 @@
 		46603E4F665A60ECF5CE87E9 /* ConfluenceToFlareTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ConfluenceToFlareTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4729EEDC967B7946522E32A6 /* ConfluencePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfluencePage.swift; sourceTree = "<group>"; };
 		48F8974E9470B4D1768F52B3 /* ContentConverterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentConverterTests.swift; sourceTree = "<group>"; };
+		4D63CF9E0DE7ED1A110E6CA0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5697C6A7EBEE8A9DA09D4973 /* APIModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIModels.swift; sourceTree = "<group>"; };
 		581EB69F9F1B2C35FCEC37B6 /* FlareUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlareUpdater.swift; sourceTree = "<group>"; };
 		5E1B9ADE0BBEA7CF45A69A38 /* DateParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateParser.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 		3D32F48864ABE413AF4A258F /* ConfluenceToFlare */ = {
 			isa = PBXGroup;
 			children = (
+				4D63CF9E0DE7ED1A110E6CA0 /* Assets.xcassets */,
 				86EAD750351E6272642395CA /* App */,
 				E15277B9C5E4DCDDC45E2261 /* Models */,
 				8D2FC14D02FF7E3E50DFF033 /* Resources */,
@@ -295,6 +298,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB1FAA7946F35D45E037FC4F /* Assets.xcassets in Resources */,
 				B1E97B9FBA0CD1C332CB10AA /* release_note_template.htm in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
