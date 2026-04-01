@@ -17,6 +17,7 @@ let package = Package(
     name: "ConfluenceToFlare",
     platforms: [
         .macOS(.v14),
+        .iOS(.v13),
     ],
     dependencies: [
         .package(url: "https://github.com/scinfu/SwiftSoup.git", from: "2.6.0"),

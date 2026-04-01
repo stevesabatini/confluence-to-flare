@@ -21,3 +21,11 @@ config.yaml
 .vscode/
 *.swp
 *.swo
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Xcode
+xcuserdata/
+DerivedData/
