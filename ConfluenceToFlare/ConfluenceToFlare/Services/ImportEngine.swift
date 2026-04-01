@@ -97,7 +97,6 @@ struct ImportEngine {
                     return
                 }
 
-                let existing = getExistingReleases(releaseNotesDir: releaseNotesDir)
                 var manifest = loadImportManifest(releaseNotesDir: releaseNotesDir)
                 let importedPageIDs = getImportedPageIDs(releaseNotesDir: releaseNotesDir)
 

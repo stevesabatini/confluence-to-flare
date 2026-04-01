@@ -110,12 +110,9 @@ struct FlareUpdater {
 
         // Collect positions of direct child TocEntry elements
         var childPositions: [(range: Range<String.Index>, link: String, date: Date?)] = []
-        var searchStart = afterRN.startIndex
 
-        // Find a reasonable end boundary (the closing </TocEntry> for Release Notes)
         // We look for TocEntry elements and their Link attributes
         let tocEntryPattern = #/TocEntry\s+Title="[^"]*"\s+Link="([^"]*)"/#
-        let closingPattern = #/<\/TocEntry>/#
 
         // Scan for child TocEntry elements
         var depth = 0

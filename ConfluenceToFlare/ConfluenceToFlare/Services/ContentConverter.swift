@@ -20,9 +20,12 @@ struct ContentConverter {
         imageMapping: [String: String],
         imageFolder: String
     ) throws -> String {
+        // Pre-extract ac:width values before SwiftSoup parsing (HTML5 parser drops ac: attributes)
+        let imageWidths = extractImageWidths(from: xhtml)
+
         let doc = try SwiftSoup.parseBodyFragment(xhtml)
 
-        try convertImages(doc: doc, imageMapping: imageMapping, imageFolder: imageFolder)
+        try convertImages(doc: doc, imageMapping: imageMapping, imageFolder: imageFolder, imageWidths: imageWidths)
         try convertMacros(doc: doc)
         try unwrapLayouts(doc: doc)
         try demoteH1ToH2(doc: doc)
@@ -32,13 +35,40 @@ struct ContentConverter {
         return try serialize(doc: doc)
     }
 
+    // MARK: - Pre-extraction (workaround for SwiftSoup dropping ac: attributes)
+
+    /// Extract ac:width values from raw XHTML keyed by ri:filename.
+    ///
+    /// SwiftSoup's HTML5 parser strips `ac:` namespace attributes, so we
+    /// pre-extract them with regex before parsing. Maps filenames to widths.
+    private static func extractImageWidths(from xhtml: String) -> [String: String] {
+        var widths: [String: String] = [:]
+
+        // Match ac:image blocks and extract width + filename
+        // Pattern handles self-closing ri:attachment (with />) and full closing tags
+        guard let pattern = try? NSRegularExpression(
+            pattern: "<ac:image[^>]*?ac:width=\"(\\d+)\"[^>]*>.*?ri:filename=\"([^\"]+)\".*?</ac:image>",
+            options: [.dotMatchesLineSeparators]
+        ) else { return widths }
+
+        let matches = pattern.matches(in: xhtml, range: NSRange(xhtml.startIndex..., in: xhtml))
+        for match in matches {
+            guard let widthRange = Range(match.range(at: 1), in: xhtml),
+                  let filenameRange = Range(match.range(at: 2), in: xhtml) else { continue }
+            widths[String(xhtml[filenameRange])] = String(xhtml[widthRange])
+        }
+
+        return widths
+    }
+
     // MARK: - Image Conversion
 
     /// Replace ac:image elements with standard <img> tags.
     private static func convertImages(
         doc: Document,
         imageMapping: [String: String],
-        imageFolder: String
+        imageFolder: String,
+        imageWidths: [String: String]
     ) throws {
         for acImage in try doc.getElementsByTag("ac:image").array() {
             if let riAttachment = try acImage.getElementsByTag("ri:attachment").first() {
@@ -49,9 +79,8 @@ struct ContentConverter {
                 let imgTag = try doc.createElement("img")
                 try imgTag.attr("src", src)
 
-                // Preserve width from ac:image
-                let width = try acImage.attr("ac:width")
-                if !width.isEmpty {
+                // Use pre-extracted width (SwiftSoup drops ac: attributes during HTML5 parsing)
+                if let width = imageWidths[confluenceName], !width.isEmpty {
                     try imgTag.attr("style", "width: \(width)px;")
                 }
 
@@ -225,8 +254,11 @@ struct ContentConverter {
                 if key.hasPrefix("ac:") || key.hasPrefix("ri:") ||
                    key.hasPrefix("data-") || key == "local-id" {
                     toRemove.append(key)
-                } else if key == "style" && tag.tagName() != "img" {
-                    toRemove.append(key)
+                } else if key == "style" {
+                    // Keep style only on img tags (where we set width from ac:width)
+                    if tag.tagName() != "img" {
+                        toRemove.append(key)
+                    }
                 } else if !keepAttributes.contains(key) {
                     toRemove.append(key)
                 }
