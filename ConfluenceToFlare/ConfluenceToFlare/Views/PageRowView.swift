@@ -5,6 +5,7 @@ struct PageRowView: View {
     let isSelected: Bool
     let isSelectable: Bool
     let onToggle: () -> Void
+    let onPreview: () -> Void
 
     var body: some View {
         HStack(spacing: 12) {
@@ -56,6 +57,16 @@ struct PageRowView: View {
             }
 
             Spacer()
+
+            // Preview button
+            Button {
+                onPreview()
+            } label: {
+                Image(systemName: "eye")
+                    .foregroundStyle(.secondary)
+            }
+            .buttonStyle(.borderless)
+            .help("Preview release note")
         }
         .padding(.vertical, 4)
         .opacity(isSelectable ? 1.0 : 0.55)

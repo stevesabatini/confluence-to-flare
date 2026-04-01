@@ -4,6 +4,7 @@ struct PageListView: View {
     @Environment(AppState.self) private var appState
     @Bindable var viewModel: PageListViewModel
     var onStartImport: () -> Void
+    @State private var previewPage: ConfluencePage?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -68,10 +69,14 @@ struct PageListView: View {
                         page: page,
                         isSelected: viewModel.isSelected(page),
                         isSelectable: viewModel.isSelectable(page),
-                        onToggle: { viewModel.togglePage(page) }
+                        onToggle: { viewModel.togglePage(page) },
+                        onPreview: { previewPage = page }
                     )
                 }
                 .listStyle(.plain)
+                .sheet(item: $previewPage) { page in
+                    PreviewView(page: page)
+                }
 
                 Divider()
 

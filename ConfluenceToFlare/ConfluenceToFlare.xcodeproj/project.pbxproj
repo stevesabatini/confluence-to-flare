@@ -10,6 +10,7 @@
 		02E48FC85DC7AF20497052A9 /* ContentConverterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F8974E9470B4D1768F52B3 /* ContentConverterTests.swift */; };
 		0AE6ABF66AF3C0F68D39E0FA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86385D9057EBD1494CF0F262 /* ContentView.swift */; };
 		1B362F9BB50FC0D46B0D265E /* ImportProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A095F87ADEB6358679F61B8 /* ImportProgressView.swift */; };
+		1EC401CF75E3C72EED3F9F8C /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3F23A685C252020C4695A4 /* PreviewView.swift */; };
 		200889C8B4C9ABAF3FA7AE53 /* BOMWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08AEDC16459761F7E8B24E6C /* BOMWriter.swift */; };
 		30B2EEE5151F8D796C76EB62 /* DateParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97308AF08E7F939DCF6A400F /* DateParserTests.swift */; };
 		35EAF512A0EBE3D45FBBFB0C /* FileAccessManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8E711CF5C901BD423A7FDA0 /* FileAccessManager.swift */; };
@@ -83,6 +84,7 @@
 		C9EF79CC509DF5E460A016A6 /* ConfluenceClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfluenceClient.swift; sourceTree = "<group>"; };
 		CBED065846FB4087B0F783BC /* ContentConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentConverter.swift; sourceTree = "<group>"; };
 		D4960AA35E4EF7685AD74569 /* TemplateRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateRenderer.swift; sourceTree = "<group>"; };
+		FB3F23A685C252020C4695A4 /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +150,7 @@
 				3A095F87ADEB6358679F61B8 /* ImportProgressView.swift */,
 				8685E224F6D4410BF3E4C0F4 /* PageListView.swift */,
 				A352D1090CDD955E1B779D43 /* PageRowView.swift */,
+				FB3F23A685C252020C4695A4 /* PreviewView.swift */,
 				860CD7AD26BBC7CAB98776F0 /* ProgressCardView.swift */,
 				902D9DEF7491BD4A414040A8 /* SettingsView.swift */,
 			);
@@ -341,6 +344,7 @@
 				3B1C4B2ADF4F367B663898D2 /* PageListView.swift in Sources */,
 				504BB4B96D26D24988B84AD2 /* PageListViewModel.swift in Sources */,
 				68A0162D0C6AFA278762E746 /* PageRowView.swift in Sources */,
+				1EC401CF75E3C72EED3F9F8C /* PreviewView.swift in Sources */,
 				6E584E7E2375F43C1EC97E2A /* ProgressCardView.swift in Sources */,
 				9263DABC4400D6BB13477A0D /* SettingsView.swift in Sources */,
 				B2A128AEF7CA0DE128DBB33C /* SettingsViewModel.swift in Sources */,
