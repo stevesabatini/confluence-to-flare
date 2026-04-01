@@ -203,6 +203,12 @@ actor ConfluenceClient {
         return allAttachments
     }
 
+    /// Download an attachment as in-memory data (for preview).
+    func downloadAttachmentData(downloadPath: String) async throws -> Data {
+        let url = "\(baseURL)/wiki\(downloadPath)"
+        return try await get(url: url)
+    }
+
     /// Download an attachment binary to a local file.
     func downloadAttachment(downloadPath: String, dest: URL) async throws {
         let url = "\(baseURL)/wiki\(downloadPath)"

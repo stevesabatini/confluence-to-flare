@@ -26,6 +26,7 @@
 		830E505C8A0DB62517F05E1E /* TemplateRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4960AA35E4EF7685AD74569 /* TemplateRenderer.swift */; };
 		867EEE2C2BA7034DA5A8B601 /* ImageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F077FE8BD370A99BF49B6EC /* ImageHandler.swift */; };
 		8B605E96B6B74D2304E59896 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35801FBCDB4CC04B70272012 /* AppSettings.swift */; };
+		8E4A2BAAD3FC926571E4F851 /* PersistentSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00A04EF5319843E9F113851A /* PersistentSplitView.swift */; };
 		906C0CC27D12C8DF0EAB4DFB /* ImportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4199FF01E0D58672188FBB14 /* ImportViewModel.swift */; };
 		9263DABC4400D6BB13477A0D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 902D9DEF7491BD4A414040A8 /* SettingsView.swift */; };
 		98365F83E444A576DFBBA48D /* ContentConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBED065846FB4087B0F783BC /* ContentConverter.swift */; };
@@ -52,6 +53,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		00A04EF5319843E9F113851A /* PersistentSplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentSplitView.swift; sourceTree = "<group>"; };
 		08AEDC16459761F7E8B24E6C /* BOMWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BOMWriter.swift; sourceTree = "<group>"; };
 		0F077FE8BD370A99BF49B6EC /* ImageHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHandler.swift; sourceTree = "<group>"; };
 		1A005A1DD60029C7F864DF3E /* ConfluenceToFlareApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfluenceToFlareApp.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 				3A095F87ADEB6358679F61B8 /* ImportProgressView.swift */,
 				8685E224F6D4410BF3E4C0F4 /* PageListView.swift */,
 				A352D1090CDD955E1B779D43 /* PageRowView.swift */,
+				00A04EF5319843E9F113851A /* PersistentSplitView.swift */,
 				FB3F23A685C252020C4695A4 /* PreviewView.swift */,
 				860CD7AD26BBC7CAB98776F0 /* ProgressCardView.swift */,
 				902D9DEF7491BD4A414040A8 /* SettingsView.swift */,
@@ -344,6 +347,7 @@
 				3B1C4B2ADF4F367B663898D2 /* PageListView.swift in Sources */,
 				504BB4B96D26D24988B84AD2 /* PageListViewModel.swift in Sources */,
 				68A0162D0C6AFA278762E746 /* PageRowView.swift in Sources */,
+				8E4A2BAAD3FC926571E4F851 /* PersistentSplitView.swift in Sources */,
 				1EC401CF75E3C72EED3F9F8C /* PreviewView.swift in Sources */,
 				6E584E7E2375F43C1EC97E2A /* ProgressCardView.swift in Sources */,
 				9263DABC4400D6BB13477A0D /* SettingsView.swift in Sources */,

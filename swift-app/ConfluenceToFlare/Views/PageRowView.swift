@@ -4,6 +4,7 @@ struct PageRowView: View {
     let page: ConfluencePage
     let isSelected: Bool
     let isSelectable: Bool
+    let isPreviewActive: Bool
     let onToggle: () -> Void
     let onPreview: () -> Void
 
@@ -62,13 +63,16 @@ struct PageRowView: View {
             Button {
                 onPreview()
             } label: {
-                Image(systemName: "eye")
-                    .foregroundStyle(.secondary)
+                Image(systemName: isPreviewActive ? "eye.fill" : "eye")
+                    .foregroundStyle(isPreviewActive ? Color.accentColor : Color.secondary)
             }
             .buttonStyle(.borderless)
             .help("Preview release note")
         }
         .padding(.vertical, 4)
+        .padding(.horizontal, 4)
+        .background(isPreviewActive ? Color.accentColor.opacity(0.08) : Color.clear)
+        .cornerRadius(6)
         .opacity(isSelectable ? 1.0 : 0.55)
     }
 

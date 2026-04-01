@@ -70,9 +70,9 @@ struct AppSettings: Codable {
         let candidates = [
             // Next to the executable's working directory
             URL(fileURLWithPath: FileManager.default.currentDirectoryPath).appendingPathComponent("config.yaml"),
-            // In the mac_confluence_to_flare project root
+            // In the python-web project directory (shared config)
             URL(fileURLWithPath: NSHomeDirectory())
-                .appendingPathComponent("Documents/Claude Code Projects/mac_confluence_to_flare/config.yaml"),
+                .appendingPathComponent("Documents/Claude Code Projects/mac_confluence_to_flare/python-web/config.yaml"),
         ]
 
         for candidate in candidates {

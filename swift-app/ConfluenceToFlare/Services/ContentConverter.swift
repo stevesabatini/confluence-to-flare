@@ -35,6 +35,30 @@ struct ContentConverter {
         return try serialize(doc: doc)
     }
 
+    /// Convert for preview display, using direct Confluence URLs for images.
+    ///
+    /// - Parameters:
+    ///   - xhtml: Raw XHTML from Confluence storage format.
+    ///   - imageURLs: {confluence_filename: full_download_url} for remote image display.
+    /// - Returns: Clean HTML string with images pointing to Confluence.
+    static func convertForPreview(
+        xhtml: String,
+        imageURLs: [String: String]
+    ) throws -> String {
+        let imageWidths = extractImageWidths(from: xhtml)
+
+        let doc = try SwiftSoup.parseBodyFragment(xhtml)
+
+        try convertImagesForPreview(doc: doc, imageURLs: imageURLs, imageWidths: imageWidths)
+        try convertMacros(doc: doc)
+        try unwrapLayouts(doc: doc)
+        try demoteH1ToH2(doc: doc)
+        try stripAttributes(doc: doc)
+        try removeEmptyParagraphs(doc: doc)
+
+        return try serialize(doc: doc)
+    }
+
     // MARK: - Pre-extraction (workaround for SwiftSoup dropping ac: attributes)
 
     /// Extract ac:width values from raw XHTML keyed by ri:filename.
@@ -80,6 +104,39 @@ struct ContentConverter {
                 try imgTag.attr("src", src)
 
                 // Use pre-extracted width (SwiftSoup drops ac: attributes during HTML5 parsing)
+                if let width = imageWidths[confluenceName], !width.isEmpty {
+                    try imgTag.attr("style", "width: \(width)px;")
+                }
+
+                try acImage.replaceWith(imgTag)
+            } else if let riURL = try acImage.getElementsByTag("ri:url").first() {
+                let url = try riURL.attr("ri:value")
+                let imgTag = try doc.createElement("img")
+                try imgTag.attr("src", url)
+                try acImage.replaceWith(imgTag)
+            } else {
+                try acImage.remove()
+            }
+        }
+    }
+
+    /// Replace ac:image elements with <img> tags using direct Confluence URLs (for preview).
+    private static func convertImagesForPreview(
+        doc: Document,
+        imageURLs: [String: String],
+        imageWidths: [String: String]
+    ) throws {
+        for acImage in try doc.getElementsByTag("ac:image").array() {
+            if let riAttachment = try acImage.getElementsByTag("ri:attachment").first() {
+                let confluenceName = try riAttachment.attr("ri:filename")
+
+                let imgTag = try doc.createElement("img")
+                if let url = imageURLs[confluenceName] {
+                    try imgTag.attr("src", url)
+                } else {
+                    try imgTag.attr("alt", "[Image: \(confluenceName)]")
+                }
+
                 if let width = imageWidths[confluenceName], !width.isEmpty {
                     try imgTag.attr("style", "width: \(width)px;")
                 }

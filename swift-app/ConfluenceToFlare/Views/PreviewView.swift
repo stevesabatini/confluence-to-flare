@@ -4,6 +4,7 @@ import WebKit
 /// Shows a rendered preview of a Confluence release note page.
 struct PreviewView: View {
     let page: ConfluencePage
+    var onClose: (() -> Void)? = nil
     @Environment(AppState.self) private var appState
     @State private var htmlContent: String = ""
     @State private var isLoading = true
@@ -31,6 +32,17 @@ struct PreviewView: View {
                     .background(badgeColor.opacity(0.15))
                     .foregroundStyle(badgeColor)
                     .clipShape(Capsule())
+
+                if let onClose {
+                    Button {
+                        onClose()
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(.secondary)
+                    }
+                    .buttonStyle(.borderless)
+                    .help("Close preview")
+                }
             }
             .padding()
             .background(.bar)
@@ -61,8 +73,8 @@ struct PreviewView: View {
                 WebView(html: htmlContent)
             }
         }
-        .frame(width: 750, height: 600)
-        .task {
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .task(id: page.id) {
             await loadContent()
         }
     }
@@ -76,6 +88,9 @@ struct PreviewView: View {
     }
 
     private func loadContent() async {
+        htmlContent = ""
+        isLoading = true
+        errorMessage = nil
         guard let client = appState.createConfluenceClient() else {
             errorMessage = "Unable to connect to Confluence. Check Settings."
             isLoading = false
@@ -83,11 +98,28 @@ struct PreviewView: View {
         }
 
         do {
-            let xhtml = try await client.getPageContent(pageID: page.id)
-            let bodyHTML = try ContentConverter.convert(
+            // Fetch page content and attachments concurrently
+            async let xhtmlTask = client.getPageContent(pageID: page.id)
+            async let attachmentsTask = client.getPageAttachments(pageID: page.id)
+
+            let xhtml = try await xhtmlTask
+            let attachments = try await attachmentsTask
+
+            // Download image attachments and build data URL mapping
+            var imageURLs: [String: String] = [:]
+            for attachment in attachments where attachment.mediaType.hasPrefix("image/") {
+                do {
+                    let data = try await client.downloadAttachmentData(downloadPath: attachment._links.download)
+                    let base64 = data.base64EncodedString()
+                    imageURLs[attachment.title] = "data:\(attachment.mediaType);base64,\(base64)"
+                } catch {
+                    // Skip failed images rather than failing the whole preview
+                }
+            }
+
+            let bodyHTML = try ContentConverter.convertForPreview(
                 xhtml: xhtml,
-                imageMapping: [:],
-                imageFolder: ""
+                imageURLs: imageURLs
             )
             htmlContent = wrapInPreviewHTML(title: page.displayDate, body: bodyHTML)
             isLoading = false
