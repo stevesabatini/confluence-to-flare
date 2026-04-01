@@ -108,7 +108,7 @@ struct ContentConverter {
         try div.attr("MadCap:autonum", "<b>\(prefix)</b>")
 
         if let body {
-            for child in body.getChildNodes().array() {
+            for child in body.getChildNodes() {
                 try div.appendChild(child)
             }
         }
@@ -149,7 +149,7 @@ struct ContentConverter {
 
         // Move body content
         if let body = try macro.getElementsByTag("ac:rich-text-body").first() {
-            for child in body.getChildNodes().array() {
+            for child in body.getChildNodes() {
                 try container.appendChild(child)
             }
         }
@@ -163,10 +163,10 @@ struct ContentConverter {
             // Move body's children to before the macro, then remove macro
             let parent = macro.parent()
             if let parent {
-                let children = body.getChildNodes().array()
-                let macroIndex = macro.siblingIndex()
+                let children = body.getChildNodes()
+                let macroIndex = macro.siblingIndex
                 for (i, child) in children.enumerated() {
-                    try parent.insertChildren(macroIndex + i, child)
+                    try parent.insertChildren(macroIndex + i, [child])
                 }
             }
             try macro.remove()
@@ -186,10 +186,10 @@ struct ContentConverter {
                 // Move children out, then remove the wrapper
                 let parent = tag.parent()
                 if let parent {
-                    let tagIndex = tag.siblingIndex()
-                    let children = tag.getChildNodes().array()
+                    let tagIndex = tag.siblingIndex
+                    let children = tag.getChildNodes()
                     for (i, child) in children.enumerated() {
-                        try parent.insertChildren(tagIndex + i, child)
+                        try parent.insertChildren(tagIndex + i, [child])
                     }
                 }
                 try tag.remove()
