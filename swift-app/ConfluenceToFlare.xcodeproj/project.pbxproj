@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		02E48FC85DC7AF20497052A9 /* ContentConverterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F8974E9470B4D1768F52B3 /* ContentConverterTests.swift */; };
 		0AE6ABF66AF3C0F68D39E0FA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86385D9057EBD1494CF0F262 /* ContentView.swift */; };
+		14073ACB0ABE07670D568296 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71C086397A3E899934AE959 /* SplashView.swift */; };
 		1B362F9BB50FC0D46B0D265E /* ImportProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A095F87ADEB6358679F61B8 /* ImportProgressView.swift */; };
 		1EC401CF75E3C72EED3F9F8C /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB3F23A685C252020C4695A4 /* PreviewView.swift */; };
 		200889C8B4C9ABAF3FA7AE53 /* BOMWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08AEDC16459761F7E8B24E6C /* BOMWriter.swift */; };
@@ -82,6 +83,7 @@
 		AC012D14F869BC9168C59AE5 /* ImportEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportEngine.swift; sourceTree = "<group>"; };
 		AFDC6E9A414E2842B912C095 /* release_note_template.htm */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = release_note_template.htm; sourceTree = "<group>"; };
 		B120D27C23B96191B21CCA2C /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
+		B71C086397A3E899934AE959 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		C103B1DF7CA464258C441774 /* PageListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageListViewModel.swift; sourceTree = "<group>"; };
 		C9EF79CC509DF5E460A016A6 /* ConfluenceClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfluenceClient.swift; sourceTree = "<group>"; };
 		CBED065846FB4087B0F783BC /* ContentConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentConverter.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 				FB3F23A685C252020C4695A4 /* PreviewView.swift */,
 				860CD7AD26BBC7CAB98776F0 /* ProgressCardView.swift */,
 				902D9DEF7491BD4A414040A8 /* SettingsView.swift */,
+				B71C086397A3E899934AE959 /* SplashView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -352,6 +355,7 @@
 				6E584E7E2375F43C1EC97E2A /* ProgressCardView.swift in Sources */,
 				9263DABC4400D6BB13477A0D /* SettingsView.swift in Sources */,
 				B2A128AEF7CA0DE128DBB33C /* SettingsViewModel.swift in Sources */,
+				14073ACB0ABE07670D568296 /* SplashView.swift in Sources */,
 				830E505C8A0DB62517F05E1E /* TemplateRenderer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -482,7 +486,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.confluencetoflare.app;
 				PRODUCT_MODULE_NAME = ConfluenceToFlare;
 				PRODUCT_NAME = "Confluence To Flare";
@@ -563,7 +567,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.confluencetoflare.app;
 				PRODUCT_MODULE_NAME = ConfluenceToFlare;
 				PRODUCT_NAME = "Confluence To Flare";

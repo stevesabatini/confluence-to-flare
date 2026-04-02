@@ -5,6 +5,19 @@ All notable changes to the Confluence-to-Flare Import Tool will be documented in
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-04-02
+
+### Added
+- Animated splash screen with phased entrance (logo, orbital dots, text, progress bar)
+- Real loading progress bound to Confluence API tree walk
+- Load time instrumentation (disk scan, API walk, transform timings stored in UserDefaults)
+- Reduce Motion accessibility support for splash screen
+- Early-completion handling: splash accelerates entrance when data loads faster than animation
+- Feature proposals directory for documenting planned enhancements
+
+### Fixed
+- Split view divider remnant visible after closing preview panel (right panel now fully removed/re-added)
+
 ## [1.1.0] - 2026-04-01
 
 ### Added
@@ -39,5 +52,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Content converter for Confluence XHTML to Flare-compatible HTML
 - Example configuration file (`config.yaml.example`)
 
+[1.2.0]: https://github.com/stevesabatini/confluence-to-flare/releases/tag/v1.2.0
 [1.1.0]: https://github.com/stevesabatini/confluence-to-flare/releases/tag/v1.1.0
 [1.0.0]: https://github.com/stevesabatini/confluence-to-flare/releases/tag/v1.0.0

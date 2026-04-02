@@ -28,7 +28,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.confluencetoflare.app
         PRODUCT_NAME: Confluence To Flare
         PRODUCT_MODULE_NAME: ConfluenceToFlare
-        MARKETING_VERSION: "1.1.0"
+        MARKETING_VERSION: "1.2.0"
         CURRENT_PROJECT_VERSION: "1"
         GENERATE_INFOPLIST_FILE: true
         INFOPLIST_KEY_LSApplicationCategoryType: "public.app-category.developer-tools"

@@ -2,13 +2,14 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(AppState.self) private var appState
-    @State private var viewState: ViewState = .loading
+    @State private var viewState: ViewState = .splash
     @State private var pageListVM = PageListViewModel()
     @State private var importVM = ImportViewModel()
     @State private var configError: String = ""
+    @State private var dataReady = false
 
     enum ViewState {
-        case loading
+        case splash
         case configError
         case pageSelection
         case importProgress
@@ -17,8 +18,17 @@ struct ContentView: View {
     var body: some View {
         Group {
             switch viewState {
-            case .loading:
-                LoadingView()
+            case .splash:
+                SplashView(
+                    statusText: pageListVM.loadingPhase,
+                    progress: pageListVM.loadingProgress,
+                    loadingComplete: dataReady,
+                    onReadyToTransition: {
+                        withAnimation(.easeInOut(duration: 0.5)) {
+                            viewState = .pageSelection
+                        }
+                    }
+                )
 
             case .configError:
                 ConfigErrorView(message: configError)
@@ -43,11 +53,15 @@ struct ContentView: View {
         .onAppear {
             validateAndLoad()
         }
+        .onChange(of: pageListVM.isLoading) { _, isLoading in
+            if !isLoading && viewState == .splash {
+                dataReady = true
+            }
+        }
     }
 
     private func validateAndLoad() {
         if appState.isSettingsValid {
-            viewState = .pageSelection
             pageListVM.loadPages(appState: appState)
         } else {
             configError = "Please configure your Confluence and Flare settings in Settings (Cmd+,)."
@@ -65,20 +79,6 @@ struct ContentView: View {
             appState: appState,
             force: pageListVM.forceReimport
         )
-    }
-}
-
-// MARK: - Loading View
-
-struct LoadingView: View {
-    var body: some View {
-        VStack(spacing: 16) {
-            ProgressView()
-                .scaleEffect(1.5)
-            Text("Loading...")
-                .foregroundStyle(.secondary)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

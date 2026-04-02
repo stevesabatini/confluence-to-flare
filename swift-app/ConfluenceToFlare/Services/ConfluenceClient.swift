@@ -121,31 +121,46 @@ actor ConfluenceClient {
     ///       → COG Technical Release Notes(Production)-*
     ///         → COG Release Features(Production)-*  ← primary target
     ///       → COG Technical Patch Release Notes(Production)-*  ← also included
-    func getReleaseFeaturePages(productionParentID: String) async throws -> [(id: String, title: String, type: String)] {
+    func getReleaseFeaturePages(
+        productionParentID: String,
+        onProgress: (@Sendable (Double) -> Void)? = nil
+    ) async throws -> [(id: String, title: String, type: String)] {
+        let timingLogger = Logger(subsystem: "ConfluenceToFlare", category: "Timing")
         var result: [(id: String, title: String, type: String)] = []
+        var apiCallCount = 0
 
         // Level 1: Get Production-YYYY year folders
+        let l1Start = ContinuousClock.now
         let yearFolders = try await getChildPages(pageID: productionParentID)
+        apiCallCount += 1
         let productionFolders = yearFolders.filter {
             $0.title.lowercased().hasPrefix("production")
         }
-        logger.info("Found \(productionFolders.count) year folder(s) under Production Environment")
+        timingLogger.info("⏱ L1 (year folders): \(l1Start.duration(to: ContinuousClock.now)) — \(productionFolders.count) folder(s)")
 
-        for yearFolder in productionFolders {
-            logger.info("  Scanning \(yearFolder.title)...")
+        let totalFolders = productionFolders.count
 
+        for (folderIndex, yearFolder) in productionFolders.enumerated() {
             // Level 2: Get release note pages within the year folder
+            let l2Start = ContinuousClock.now
             let releasePages = try await getChildPages(pageID: yearFolder.id)
+            apiCallCount += 1
+            timingLogger.info("⏱ L2 (\(yearFolder.title)): \(l2Start.duration(to: ContinuousClock.now)) — \(releasePages.count) page(s)")
 
-            for page in releasePages {
+            let totalRelease = releasePages.count
+
+            for (pageIndex, page) in releasePages.enumerated() {
                 let title = page.title
 
                 if title.contains("Patch") && title.contains("Release Notes") {
                     result.append((id: page.id, title: title, type: "patch"))
-                    logger.info("    Found patch: \(title)")
 
                 } else if title.contains("Technical Release Notes") || title.contains("Technical_Release Notes") {
+                    let l3Start = ContinuousClock.now
                     let children = try await getChildPages(pageID: page.id)
+                    apiCallCount += 1
+                    timingLogger.info("⏱ L3 (\(title)): \(l3Start.duration(to: ContinuousClock.now)) — \(children.count) child(ren)")
+
                     let featuresChildren = children.filter {
                         $0.title.contains("Features") || $0.title.contains("Release Features")
                     }
@@ -153,18 +168,22 @@ actor ConfluenceClient {
                     if !featuresChildren.isEmpty {
                         for child in featuresChildren {
                             result.append((id: child.id, title: child.title, type: "features"))
-                            logger.info("    Found features: \(child.title)")
                         }
                     } else {
                         result.append((id: page.id, title: title, type: "features"))
-                        logger.info("    Found features (no child): \(title)")
                     }
-                } else {
-                    logger.debug("    Skipping non-release page: \(title)")
+                }
+
+                // Report progress: distribute across folder/page
+                if totalFolders > 0 && totalRelease > 0 {
+                    let folderFraction = Double(folderIndex) / Double(totalFolders)
+                    let pageFraction = Double(pageIndex + 1) / Double(totalRelease) / Double(totalFolders)
+                    onProgress?(folderFraction + pageFraction)
                 }
             }
         }
 
+        timingLogger.info("⏱ API tree walk complete: \(apiCallCount) API calls, \(result.count) pages found")
         return result
     }
 
